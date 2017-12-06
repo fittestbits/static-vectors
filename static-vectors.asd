@@ -9,7 +9,7 @@
   :licence "MIT"
   :version (:read-file-form "version.sexp")
   :defsystem-depends-on (#+(or allegro cmu ecl sbcl) :cffi-grovel)
-  :depends-on (:alexandria :cffi)
+  :depends-on (:alexandria #-mezzano :cffi)
   :pathname "src/"
   :components ((:file "pkgdcl")
                (:file "constantp" :depends-on ("pkgdcl"))
@@ -25,10 +25,11 @@
                                 #+ecl       "impl-ecl"
                                 #+lispworks "impl-lispworks"
                                 #+sbcl      "impl-sbcl"
-                                #-(or allegro ccl cmu ecl lispworks sbcl)
+                                #+mezzano   "impl-mezzano"
+                                #-(or allegro ccl cmu ecl lispworks sbcl mezzano)
                                   #.(error "static-vectors does not support this Common Lisp implementation!"))
                (:file "constructor" :depends-on ("pkgdcl" "constantp" "initialize" "impl"))
-               (:file "cffi-type-translator" :depends-on ("pkgdcl" "impl"))))
+               #-mezzano (:file "cffi-type-translator" :depends-on ("pkgdcl" "impl"))))
 
 (defsystem :static-vectors/test
   :description "Static-vectors test suite."

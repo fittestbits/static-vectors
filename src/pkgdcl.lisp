@@ -6,7 +6,7 @@
 (in-package :common-lisp-user)
 
 (defpackage :static-vectors
-  (:use #:common-lisp :alexandria :cffi)
+  (:use #:common-lisp :alexandria #-mezzano :cffi)
   (:shadow #:constantp)
   (:export
    ;; Constructors and destructors
@@ -16,7 +16,7 @@
    #:with-static-vectors
 
    ;; Accessors
-   #:static-vector-pointer
+   #-mezzano #:static-vector-pointer
 
    ;; CFFI wrapper type
    #:static-vector
